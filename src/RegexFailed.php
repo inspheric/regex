@@ -20,6 +20,13 @@ class RegexFailed extends Exception
         return new static("Error replacing pattern `{$pattern}` in subject `{$subject}`. {$message}");
     }
 
+    public static function split(string $pattern, string $subject, string $message): self
+    {
+        $subject = static::trimString($subject);
+
+        return new static("Error splitting subject `{$subject}` with pattern `{$pattern}`. {$message}");
+    }
+
     public static function groupDoesntExist(string $pattern, string $subject, $group): self
     {
         return new static("Pattern `{$pattern}` with subject `{$subject}` didn't capture a group named {$group}");

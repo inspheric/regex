@@ -38,4 +38,16 @@ class Regex
     {
         return ReplaceResult::for($pattern, $replacement, $subject, $limit);
     }
+
+    /**
+     * @param string $pattern
+     * @param string $subject
+     * @param int $limit
+     *
+     * @return \Spatie\Regex\SplitResult
+     */
+    public static function split(string $pattern, string $subject, $limit = -1): SplitResult
+    {
+        return SplitResult::for($pattern, $subject, $limit);
+    }
 }
