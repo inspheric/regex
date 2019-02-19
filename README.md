@@ -7,7 +7,7 @@
 [![StyleCI](https://styleci.io/repos/65915598/shield)](https://styleci.io/repos/65915598)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/regex.svg?style=flat-square)](https://packagist.org/packages/spatie/regex)
 
-Php's built in `preg_*` functions require some odd patterns like passing variables by reference and treating `false` or `null` values as errors. `spatie/regex` provides a cleaner interface for `preg_match`, `preg_match_all`, `preg_replace` and `preg_replace_callback`.
+Php's built in `preg_*` functions require some odd patterns like passing variables by reference and treating `false` or `null` values as errors. `spatie/regex` provides a cleaner interface for `preg_match`, `preg_match_all`, `preg_replace`, `preg_replace_callback` and `preg_split`.
 
 ```php
 use Spatie\Regex\Regex;
@@ -34,6 +34,10 @@ Regex::replace('/a/', 'b', 'abc')->result(); // 'bbc';
 Regex::replace('/a/', function (MatchResult $result) {
     return $result->result() . 'Hello!';
 }, 'abc')->result(); // 'aHello!bc';
+
+// Using `split`
+Regex::split('/a/', 'abracadabra')->hasMatch(); // true
+Regex::split('/a/', 'abracadabra')->pieces(); // Array of pieces ['', 'br', 'c', 'd', 'br', '']
 ```
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
@@ -158,6 +162,38 @@ Regex::replace('/a/', function (MatchResult $matchResult) {
 
 Patterns, replacements and subjects can also be arrays. `Regex::replace` behaves exactly like [`preg_replace`](http://php.net/manual/en/function.preg-replace.php) in those instances.
 
+### Splitting using a pattern
+
+Splits a subject using a pattern. Returns a `SplitResult` object.
+
+```php
+/**
+ * @param string $pattern
+ * @param string $subject
+ *
+ * @return \Spatie\Regex\SplitResult
+ */
+Regex::split(string $pattern, string $subject): SplitResult
+```
+
+#### `SplitResult::hasMatch(): bool`
+
+Checks if the pattern matches the subject.
+
+```php
+Regex::split('/a/', 'abracadabra')->hasMatch(); // true
+Regex::split('/z/', 'abracadabra')->hasMatch(); // false
+```
+
+#### `SplitResult::pieces(): array`
+
+Return an array of the pieces that the string was split into. Returns an array containing only the original string if no match was made.
+
+```php
+Regex::split('/a/', 'abracadabra')->pieces(); // ['', 'br', 'c', 'd', 'br', '']
+Regex::split('/z/', 'abracadabra')->pieces(); // ['abracadabra']
+```
+
 ### Error handling
 
 If anything goes wrong in a `Regex` method, a `RegexFailed` exception gets thrown. No need for checking `preg_last_error()`.
@@ -197,7 +233,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
