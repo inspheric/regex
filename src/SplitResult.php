@@ -3,7 +3,6 @@
 namespace Spatie\Regex;
 
 use Exception;
-use ArrayAccess;
 
 class SplitResult extends RegexResult
 {
@@ -44,7 +43,7 @@ class SplitResult extends RegexResult
         }
 
         $result = preg_match($pattern, $subject);
-        
+
         if ($result === false) {
             throw RegexFailed::split($pattern, $subject, static::lastPregError());
         }
