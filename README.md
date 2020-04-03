@@ -204,13 +204,13 @@ Regex::split('/z/', 'abracadabra')->pieces(); // ['abracadabra']
 
 #### `SplitResult::offsets(): array`
 
-Return an array of the pieces that the string was split into and the string offsets, if the `PREG_SPLIT_OFFSET_CAPTURE` flag was used.
+Return an array of the pieces that the string was split into and their string offsets, if the `PREG_SPLIT_OFFSET_CAPTURE` flag was used.
 
 Returns an empty array if the flag was not used.
 
 ```php
-Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [[0, ''], [1, 'br'], [4, 'c'], [6, 'd'], [8, 'br'], [11, '']]
-Regex::split('/z/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [[0, 'abracadabra']]
+Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [['', 0], ['br', 1], ['c', 4], ['d', 6], ['br', 8], ['', 11]]
+Regex::split('/z/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [['abracadabra', 0]]
 Regex::split('/z/', 'abracadabra')->offsets(); // []
 ```
 
