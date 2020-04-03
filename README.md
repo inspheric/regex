@@ -171,11 +171,16 @@ Splits a subject using a pattern. Returns a `SplitResult` object.
  * @param string $pattern
  * @param string $subject
  * @param int $limit
+ * @param int $flags
  *
  * @return \Spatie\Regex\SplitResult
  */
-Regex::split(string $pattern, string $subject, $limit = -1): SplitResult
+Regex::split(string $pattern, string $subject, $limit = -1, $flags = 0): SplitResult
 ```
+
+The valid flags are `PREG_SPLIT_NO_EMPTY`, `PREG_SPLIT_DELIM_CAPTURE` and `PREG_SPLIT_OFFSET_CAPTURE`, exactly like [`preg_split`](http://php.net/manual/en/function.preg-split.php).
+
+For the special case of `PREG_SPLIT_OFFSET_CAPTURE`, see `offsets()` below.
 
 #### `SplitResult::hasMatch(): bool`
 
@@ -188,11 +193,25 @@ Regex::split('/z/', 'abracadabra')->hasMatch(); // false
 
 #### `SplitResult::pieces(): array`
 
-Return an array of the pieces that the string was split into. Returns an array containing only the original string if no match was made.
+Return an array of the pieces that the string was split into. Returns an array containing only the original string if no match was made. 
+
+Note that even if the `PREG_SPLIT_OFFSET_CAPTURE` flag was used, only the actual string pieces will be returned by `pieces()`. To return the strings along with their offsets (i.e. the default behaviour of `preg_split` with `PREG_SPLIT_OFFSET_CAPTURE`), use `offsets()` below.
 
 ```php
 Regex::split('/a/', 'abracadabra')->pieces(); // ['', 'br', 'c', 'd', 'br', '']
 Regex::split('/z/', 'abracadabra')->pieces(); // ['abracadabra']
+```
+
+#### `SplitResult::offsets(): array`
+
+Return an array of the pieces that the string was split into and the string offsets, if the `PREG_SPLIT_OFFSET_CAPTURE` flag was used.
+
+Returns an empty array if the flag was not used.
+
+```php
+Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [[0, ''], [1, 'br'], [4, 'c'], [6, 'd'], [8, 'br'], [11, '']]
+Regex::split('/z/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets(); // [[0, 'abracadabra']]
+Regex::split('/z/', 'abracadabra')->offsets(); // []
 ```
 
 ### Error handling
