@@ -30,15 +30,16 @@ class SplitResult extends RegexResult
      * @param string $pattern
      * @param string $subject
      * @param int $limit
+     * @param int $flags
      *
      * @return static
      *
      * @throws \Spatie\Regex\RegexFailed
      */
-    public static function for(string $pattern, string $subject, $limit)
+    public static function for(string $pattern, string $subject, int $limit = -1, int $flags = 0)
     {
         try {
-            $pieces = preg_split($pattern, $subject, $limit);
+            $pieces = preg_split($pattern, $subject, $limit, $flags);
         } catch (Exception $exception) {
             throw RegexFailed::split($pattern, $subject, $exception->getMessage());
         }
