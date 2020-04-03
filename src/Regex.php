@@ -43,11 +43,12 @@ class Regex
      * @param string $pattern
      * @param string $subject
      * @param int $limit
+     * @param int $flags
      *
      * @return \Spatie\Regex\SplitResult
      */
-    public static function split(string $pattern, string $subject, $limit = -1): SplitResult
+    public static function split(string $pattern, string $subject, int $limit = -1, int $flags = 0): SplitResult
     {
-        return SplitResult::for($pattern, $subject, $limit);
+        return SplitResult::for($pattern, $subject, $limit, $flags);
     }
 }
