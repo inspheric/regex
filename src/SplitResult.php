@@ -61,7 +61,7 @@ class SplitResult extends RegexResult
             $pieces = [];
             
             foreach ($offsets as $piece) {
-                $pieces[] = $piece[1];
+                $pieces[] = $piece[0];
             }
         }
 
