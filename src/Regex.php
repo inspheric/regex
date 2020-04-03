@@ -47,7 +47,7 @@ class Regex
      *
      * @return \Spatie\Regex\SplitResult
      */
-    public static function split(string $pattern, string $subject, int $limit = -1, int $flags = 0): SplitResult
+    public static function split(string $pattern, string $subject, $limit = -1, $flags = 0): SplitResult
     {
         return SplitResult::for($pattern, $subject, $limit, $flags);
     }
