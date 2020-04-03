@@ -18,12 +18,16 @@ class SplitResult extends RegexResult
     /** @var array */
     protected $pieces;
 
-    public function __construct(string $pattern, string $subject, bool $hasMatch, array $pieces)
+    /** @var array */
+    protected $offsets;
+
+    public function __construct(string $pattern, string $subject, bool $hasMatch, array $pieces, array $offsets = [])
     {
         $this->pattern = $pattern;
         $this->subject = $subject;
         $this->hasMatch = $hasMatch;
         $this->pieces = $pieces;
+        $this->offsets = $offsets;
     }
 
     /**
@@ -36,7 +40,7 @@ class SplitResult extends RegexResult
      *
      * @throws \Spatie\Regex\RegexFailed
      */
-    public static function for(string $pattern, string $subject, int $limit = -1, int $flags = 0)
+    public static function for(string $pattern, string $subject, $limit = -1, $flags = 0)
     {
         try {
             $pieces = preg_split($pattern, $subject, $limit, $flags);
@@ -50,7 +54,18 @@ class SplitResult extends RegexResult
             throw RegexFailed::split($pattern, $subject, static::lastPregError());
         }
 
-        return new static($pattern, $subject, $result, $pieces);
+        $offsets = [];
+
+        if ($flags & PREG_SPLIT_OFFSET_CAPTURE) {
+            $offsets = $pieces;
+            $pieces = [];
+            
+            foreach ($offsets as $piece) {
+                $pieces[] = $piece[1];
+            }
+        }
+
+        return new static($pattern, $subject, $result, $pieces, $offsets);
     }
 
     public function hasMatch(): bool
@@ -66,5 +81,15 @@ class SplitResult extends RegexResult
     public function pieces(): array
     {
         return $this->pieces;
+    }
+
+    /**
+     * Return an array of the offsets.
+     *
+     * @return array
+     */
+    public function offsets(): array
+    {
+        return $this->offsets;
     }
 }
