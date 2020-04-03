@@ -60,35 +60,35 @@ class SplitTest extends TestCase
     {
         $this->assertEquals('br', Regex::split('/a/', 'abracadabra')->pieces()[1]);
     }
-    
+
     /** @test */
     public function it_can_capture_delimiters()
     {
-        $this->assertEquals(['a', 'br', 'a', 'c', 'a', 'd', 'a', 'br', 'a'], Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_DELIM_CAPTURE)->pieces());
+        $this->assertEquals(['', 'a', 'br', 'a', 'c', 'a', 'd', 'a', 'br', 'a', ''], Regex::split('/(a)/', 'abracadabra', null, PREG_SPLIT_DELIM_CAPTURE)->pieces());
     }
-    
+
     /** @test */
     public function it_can_ignore_empty_pieces()
     {
         $this->assertEquals(['br', 'c', 'd', 'br'], Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_NO_EMPTY)->pieces());
     }
-    
+
     /** @test */
     public function it_will_retrieve_the_split_pieces_only_with_offset_capture()
     {
         $this->assertEquals(['', 'br', 'c', 'd', 'br', ''], Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->pieces());
     }
-    
+
     /** @test */
     public function it_can_retrieve_the_offsets_with_offset_capture()
     {
-        $this->assertEquals([[0, ''], [1, 'br'], [4, 'c'], [6, 'd'], [8, 'br'], [11, '']], Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets());
+        $this->assertEquals([['', 0], ['br', 1], ['c', 4], ['d', 6], ['br', 8], ['', 11]], Regex::split('/a/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets());
     }
 
     /** @test */
     public function it_returns_the_whole_string_if_the_pattern_did_not_match_with_offset_capture()
     {
-        $this->assertEquals([[0, 'abracadabra']], Regex::split('/z/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets());
+        $this->assertEquals([['abracadabra', 0]], Regex::split('/z/', 'abracadabra', null, PREG_SPLIT_OFFSET_CAPTURE)->offsets());
     }
 
     /** @test */
